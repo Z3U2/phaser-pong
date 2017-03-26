@@ -109,6 +109,7 @@ function update() {
         // playerPaddle.animations.stop();
     }
 
+    // simple AI for AI paddle
     aiPaddle.body.velocity.y=ball.body.velocity.y
 
 
