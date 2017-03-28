@@ -43,7 +43,7 @@ function create() {
   ball.body.bounce.y = 1;
 
   // Ball speed
-  speed = 300
+  speed = 500
 
   // Add bounds event listener and callback
   ball.checkWorldBounds=true;
@@ -56,16 +56,20 @@ function create() {
   paddles.enableBody = true;
 
   // Creating player paddle
-  playerPaddle = paddles.create(20,(game.world.height-256)/2,'paddle');
+  playerPaddle = paddles.create(10,(game.world.height-128)/2,'paddle');
 
   // Creating AI paddle
-  aiPaddle = paddles.create(game.world.width-32-20,(game.world.height-256)/2,'paddle');
+  aiPaddle = paddles.create(game.world.width-16-10,(game.world.height-128)/2,'paddle');
 
   // Making paddles immovable (no movement transfer)
   paddles.setAll('body.immovable',true);
 
   // Collision between paddles and world bounds
   paddles.setAll('body.collideWorldBounds',true);
+
+  // Smaller paddles
+  paddles.setAll('scale.x',0.5);
+  paddles.setAll('scale.y',0.5);
 
   //  Our Controls
   cursors = game.input.keyboard.createCursorKeys();
@@ -110,8 +114,8 @@ function update() {
     }
 
     // simple AI for AI paddle
-    aiPaddle.body.velocity.y=ball.body.velocity.y
-
+    aiPaddle.body.velocity.y = ball.body.velocity.y;
+    aiPaddle.body.maxVelocity.y = Math.abs(ball.body.velocity.y)*0.8;
 
 }
 
@@ -135,7 +139,7 @@ function setVelocity(ball) {
   var angle = ((Math.random()*(Math.PI/2))-(Math.PI/4));
 
   // Generate speed  var speed = 300
-  var xSpeed = Math.cos(angle)*speed
+  var xSpeed = -Math.cos(angle)*speed
   var ySpeed = Math.sin(angle)*speed
   ball.body.velocity.x = xSpeed;
   ball.body.velocity.y = ySpeed;
