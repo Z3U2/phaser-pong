@@ -17,6 +17,12 @@ var speed;
 var space;
 var cursors;
 var helpText;
+var score = {
+  player : 0,
+  ai : 0
+};
+var playerScoreText;
+var aiScoreText;
 
 function create() {
 
@@ -75,8 +81,14 @@ function create() {
   cursors = game.input.keyboard.createCursorKeys();
   space = game.input.keyboard.addKey(32);
 
-  // Score
+  // Help text
   helpText = game.add.text(16, 16, 'Press Space Key to start !', { fontSize: '32px', fill: '#fff' });
+
+  // Score
+  playerScoreText = game.add.text(200, 125 ,score.player, { fontSize: '75px', fill: '#fff' });
+  playerScoreText.anchor.setTo(0.5,0.5);
+  aiScoreText = game.add.text(600, 125, score.ai,{fontSize: '75px',fill: "#fff"});
+  aiScoreText.anchor.setTo(0.5,0.5);
 
 }
 
@@ -100,12 +112,12 @@ function update() {
   if (cursors.up.isDown)
     {
         //  Move to the top
-        playerPaddle.body.velocity.y = -300;
+        playerPaddle.body.velocity.y = -400;
     }
     else if (cursors.down.isDown)
     {
         //  Move to the bottom
-        playerPaddle.body.velocity.y = 300;
+        playerPaddle.body.velocity.y = 400;
     }
     else
     {
@@ -115,11 +127,15 @@ function update() {
 
     // simple AI for AI paddle
     aiPaddle.body.velocity.y = ball.body.velocity.y;
-    aiPaddle.body.maxVelocity.y = Math.abs(ball.body.velocity.y)*0.8;
+    aiPaddle.body.maxVelocity.y = Math.abs(ball.body.velocity.y)*0.77;
 
 }
 
 function ballOut (ball) {
+
+
+  updateScore();
+
   ball.reset((game.world.width-40)/2,(game.world.height-40)/2);
 
   // Reset AI paddle
@@ -143,4 +159,18 @@ function setVelocity(ball) {
   var ySpeed = Math.sin(angle)*speed
   ball.body.velocity.x = xSpeed;
   ball.body.velocity.y = ySpeed;
+}
+
+function updateScore() {
+  if (ball.body.velocity.x>0) {
+    score.player += 1;
+    console.log(score.player);
+    playerScoreText.text = score.player;
+  }
+  else {
+    score.ai += 1;
+    console.log(score.ai);
+    aiScoreText.text = score.ai;
+  }
+
 }
